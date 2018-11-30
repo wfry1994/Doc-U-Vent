@@ -1,0 +1,62 @@
+<div class="container mt-5">
+  <mdb-card>
+    <mdb-card-body class="has-border-radius" id="login-form">
+      <form name="loginForm" (ngSubmit)="form.valid && login()" #form="ngForm" novalidate>
+        <p class="h5 text-center mb-2">Sign in</p>
+        <div *ngIf="error !== undefined" class="alert-danger text-center mb-1">{{error}}</div>
+        <div class="md-form">
+          <i class="fa fa-envelope prefix grey-text"></i>
+          <label for="username">Email</label>
+          <input type="text" class="form-control" name="username" [(ngModel)]="emailAddress" #email="ngModel" required autocomplete="off" mdbInputDirective [mdbValidate]="false" />
+          <div *ngIf="form.submitted && email.invalid" class="alert-danger">Email is not valid.</div>
+        </div>
+        <div class="md-form">
+          <i class="fa fa-lock prefix grey-text"></i>
+          <label for="password">Password</label>
+          <input type="password" class="form-control" name="password" [(ngModel)]="password" #passwordText="ngModel" required autocomplete="off" mdbInputDirective [mdbValidate]="false" />
+          <div *ngIf="form.submitted && !passwordText.valid" class="alert-danger">Password is required.</div>
+        </div>
+        <div class="md-form">
+          <div class="container text-center">
+            <button mdbBtn color="primary" *ngIf="!loading" mdbWavesEffect>Login</button>
+            <mat-spinner [color]="primary" [color]="primary" [mode]="indeterminate" [diameter]="50" *ngIf="loading"></mat-spinner>
+          </div>
+          <div class="container text-center mt-2">
+            <a *ngIf="!loading" [routerLink]="['/register']" class=""> no Account? Register Now</a>
+          </div>
+          <div class="container text-center mt-2">
+            <span id="reset" *ngIf="!loading" (click)="showModal()" class="">Forgot Password</span>
+          </div>
+        </div>
+      </form>
+    </mdb-card-body>
+  </mdb-card>
+</div>
+
+<!--Forgot Password Modal-->
+<div mdbModal #messageModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100">Forgot Password</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="hideModal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="recoveryError !== undefined" class="alert-danger text-center mb-1">{{recoveryError}}</div>
+        <form *ngIf="!messageIsShowing">
+          <div class="md-form">
+            <i class="fa fa-envelope prefix grey-text"></i>
+            <label for="email">Email </label>
+            <input type="text" class="form-control" name="email" [(ngModel)]="recoveryEmail" required autocomplete="off" mdbInputDirective [mdbValidate]="false" />
+          </div>
+        </form>
+        <span *ngIf="messageIsShowing">{{message}}</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-sm waves-light" mdbWavesEffect (click)="sendEmail()">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>

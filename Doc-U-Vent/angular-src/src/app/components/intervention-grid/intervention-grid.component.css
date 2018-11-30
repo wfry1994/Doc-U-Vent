@@ -1,0 +1,13 @@
+ag-grid-angular {
+  margin: 0 auto;
+  height: 500px;
+  width: 100%;
+}
+
+.container-fluid{
+  padding-top: 50px;
+}
+
+.ag-header-cell-label{
+  justify-content: center;
+}

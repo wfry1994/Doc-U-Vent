@@ -1,0 +1,9 @@
+#register-form
+{
+  background-color: #eee;
+}
+
+mat-spinner{
+ display: inline-block;
+ vertical-align: bottom;
+}

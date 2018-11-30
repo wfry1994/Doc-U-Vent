@@ -1,0 +1,85 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-school-color">
+  <a class="navbar-brand" href="/"><img src="../assets/docuventLogo.png" id = "logo"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a mdbWavesEffect class="nav-link waves-light" [routerLink]="['/home']">Home <span class="sr-only"></span></a>
+      </li>
+
+      <li class="nav-item">
+        <a mdbWavesEffect class="nav-link waves-light" [routerLink]="['/about']">About<span class="sr-only"></span></a>
+      </li>
+
+      <li *ngIf="userIsAdmin()" class="nav-item dropdown" dropdown>
+        <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light">
+                 Admin<span class="caret"></span></a>
+        <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
+          <a [routerLink]="['/assign-groups']" class="dropdown-item waves-light" mdbWavesEffect>Assign Clinical groups</a>
+          <a [routerLink]="['/clinical-groups']" class="nav-link waves-light" mdbWavesEffect>Manage Clinical Groups</a>
+          <a [routerLink]="['/edit-roles']" class="dropdown-item waves-light" mdbWavesEffect>Change User Roles</a>
+          <a [routerLink]="['/delete-users']" class="dropdown-item waves-light" mdbWavesEffect>Remove Users</a>
+          <!-- <a [routerLink]="['/create-schools']" class="dropdown-item waves-light" mdbWavesEffect>Add University</a> -->
+        </div>
+      </li>
+
+      <li *ngIf="userIsFaculty()" class="nav-item dropdown" dropdown>
+        <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light">
+                       Faculty<span class="caret"></span></a>
+        <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
+          <a [routerLink]="['/clinical-groups']" class="nav-link waves-light" mdbWavesEffect>Manage Clinical Groups</a>
+          <a [routerLink]="['/assign-groups']" class="dropdown-item waves-light" mdbWavesEffect>Assign Clinical groups</a>
+        </div>
+      </li>
+
+
+
+    </ul>
+
+    <ul class="navbar-nav navbar-right">
+      <li *ngIf="!isUserLoggedIn()" class="nav-item">
+        <a mdbWavesEffect class="nav-link waves-light" [routerLink]="['/login']"> Login</a>
+      </li>
+
+      <li *ngIf="isUserLoggedIn()" class="nav-item dropdown" dropdown>
+        <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light">
+                       Account<span class="caret"></span></a>
+        <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown-primary" role="menu">
+          <a [routerLink]="['/dashboard']" class="nav-link waves-light" mdbWavesEffect>Dashboard</a>
+          <a mdbWavesEffect class="nav-link waves-light" (click)="showModal(); changePassword()">Change Password</a>
+          <a mdbWavesEffect class="nav-link waves-light" (click)="logout()">Logout</a>
+        </div>
+      </li>
+
+      <div *ngIf="!isUserLoggedIn()" class="nav-item">
+        <a mdbWavesEffect class="nav-link waves-light" [routerLink]="['/register']">Register</a>
+      </div>
+
+    </ul>
+
+  </div>
+</nav>
+
+
+<!--Forgot Password Modal-->
+<div mdbModal #messageModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100">Password Reset</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="hideModal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+      </div>
+      <div class="modal-body">
+        <span>{{message}}</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-sm waves-light" mdbWavesEffect (click)="hideModal()">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>

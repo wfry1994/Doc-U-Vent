@@ -1,0 +1,42 @@
+@import "~ag-grid/dist/styles/ag-grid.css";
+@import "~ag-grid/dist/styles/ag-theme-balham.css";
+
+html {
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 80px;
+}
+
+body,
+html {
+  background-color: #bdbdbd;
+  min-width: 100%;
+}
+
+.has-border-radius {
+  border-radius: 5px;
+}
+
+.bg-school-color {
+  background-color: #cc0000;
+}
+
+#card-container {
+  margin-top: 30px;
+}
+
+.bg-school-color-secondary {
+  background-color: #eee;
+  border-radius: 5px;
+}
+
+#paragraph-text {
+  font-family: sans-serif;
+  font-size: 20px;
+}
+
+i:hover {
+  cursor: pointer;
+}

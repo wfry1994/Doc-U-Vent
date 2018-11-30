@@ -1,0 +1,45 @@
+<div class="bg-school-color-secondary mt-5 container">
+  <div class="container pt-3">
+    <span id="icon-holder"><strong>Directions:</strong></span>
+    <i mdbTooltip="Here you can remove users and all of their data from the applicaiton. Please note that the user account will still need to be removed from the Firebase console." placement="right" class="material-icons ml-1">info_outline</i>
+  </div>
+    <div class="table-responsive text-center">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">
+              <h4>Email</h4>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users; let i = index">
+            <th scope="row">
+              {{user.email}}
+              <mdb-icon size ="2x" class="float-right" icon="trash" (click)="showModal(); setUserToDelete(i)"></mdb-icon>
+            </th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
+<div mdbModal #messageModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100">{{modalTitle}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="hideModal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+      </div>
+      <div class="modal-body">
+        <strong>{{message}}</strong>
+      </div>
+      <div class="modal-footer">
+        <mat-spinner [color]="primary" [color]="primary" [mode]="indeterminate" [diameter]="50" *ngIf="loading"></mat-spinner>
+        <button type="button" class="btn btn-primary btn-sm waves-light" mdbWavesEffect (click)="hideModal(); deleteUser()">Yes</button>
+        <button type="button" class="ml-3 btn btn-primary btn-sm waves-light" mdbWavesEffect (click)="hideModal()">No</button>
+      </div>
+    </div>
+  </div>
+</div>

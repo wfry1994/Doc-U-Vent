@@ -1,0 +1,16 @@
+mat-spinner{
+ display: inline-block;
+ vertical-align: bottom;
+}
+
+#login-form {
+  background-color: #eee;
+}
+
+#reset{
+  color: #007bff;
+}
+
+#reset:hover {
+  cursor: pointer;
+}

@@ -1,0 +1,32 @@
+<div class="container mt-5">
+  <mdb-card>
+  <mdb-card-body class="has-border-radius" id="register-form">
+  <form name="form" (ngSubmit)="f.valid && register()" #f="ngForm" novalidate>
+    <p class="h5 text-center mb-2">Register</p>
+    <div mb-1 *ngIf="errorMessage !== undefined" class="alert-danger text-center mb-1">{{errorMessage}}</div>
+    <div class="md-form">
+      <i class="fa fa-envelope prefix grey-text"></i>
+      <label for="username">Email</label>
+      <input type="text" class="form-control" name="username" [(ngModel)]="email" #emailText="ngModel" required mdbInputDirective [mdbValidate]="false" autocomplete="off"/>
+      <div *ngIf="f.submitted && emailText.invalid" class="alert-danger">Email is not valid.</div>
+    </div>
+    <div class="md-form">
+      <i class="fa fa-lock prefix grey-text"></i>
+      <label for="password">Password</label>
+      <input type="password" class="form-control" name="password" [(ngModel)]="password" #passwordText="ngModel" required mdbInputDirective [mdbValidate]="false"/>
+      <div *ngIf="f.submitted && !passwordText.valid" class="alert-danger">Password is required</div>
+    </div>
+
+    <div class="md-form">
+      <div class="container text-center">
+        <button mdbBtn color="primary" *ngIf="!loading" mdbWavesEffect>Register</button>
+        <mat-spinner [color]="primary" [color]="primary" [mode]="indeterminate" [diameter]="50" *ngIf="loading"></mat-spinner>
+      </div>
+      <div class="container text-center mt-2">
+        <a *ngIf="!loading" [routerLink]="['/login']">Already have an Account?</a>
+      </div>
+    </div>
+  </form>
+</mdb-card-body>
+</mdb-card>
+</div>

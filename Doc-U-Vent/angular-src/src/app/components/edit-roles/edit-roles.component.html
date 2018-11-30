@@ -1,0 +1,51 @@
+<div class="container">
+  <form class="bg-school-color-secondary" (ngSubmit)="updateRoles()">
+    <div class="table-responsive mt-5 text-center">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Email</th>
+            <th scope="col">Current Role</th>
+            <th scope="col">New Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users; let i = index">
+            <th scope="row">{{user.email}}</th>
+            <td><strong>{{user.role}}</strong></td>
+            <td>
+              <select name="role" class="browser-default" (change)="updateUsersRole(i, $event.target.value)">
+            <option value="admin" selected>Please Select a New Role</option>
+            <option value="admin">Admin</option>
+            <option value="faculty">Faculty</option>
+            <option value="student">Student</option>
+        </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="form-group text-center">
+      <button mdbBtn class="mb-3" color="primary" mdbWavesEffect>Submit</button>
+    </div>
+  </form>
+</div>
+
+<div mdbModal #messageModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" (onHide)="redirect()">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100">{{modalTitle}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="hideModal()">
+                    <span aria-hidden="true">×</span>
+                </button>
+      </div>
+      <div class="modal-body">
+        {{message}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-sm waves-light" mdbWavesEffect (click)="hideModal()">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>

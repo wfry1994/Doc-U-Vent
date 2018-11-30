@@ -1,0 +1,12 @@
+<div class="container-fluid mt-5">
+  <div class="mb-3 ml-2">
+    <label class="pr-2" for="fileName"><strong>Report Name:</strong></label>
+    <input class="mr-2" type="text" [(ngModel)]="fileName" name="fileName">
+  </div>
+  <div class="mb-3">
+    <button mdbBtn color="primary" class="mt-2 mr-2" (click)=export() mdbWavesEffect>Export to CSV</button>
+    <button mdbBtn color="primary" class="mt-2" [disabled]="!interventionIsSelected" (click)="editIntervention()" mdbWavesEffect>Edit Selected</button>
+  </div>
+  <ag-grid-angular class="ag-theme-balham" [columnDefs]="columnDefs" [rowData]="rowData" enableColResize="true" enableSorting="true" enableFilter="true" rowSelection="single" (gridReady)="onGridReady($event)" (selectionChanged)="onSelectionChanged()">
+  </ag-grid-angular>
+</div>

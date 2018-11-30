@@ -1,0 +1,330 @@
+<div class="h-75 mb-5 container">
+  <form id="intervention" class="bg-school-color-secondary" #interventionForm="ngForm" (ngSubmit)="interventionForm.valid && submitIntervention()" name="interventionForm">
+    <div class="form-group form-title">
+      <h2 class="pt-3">Drug Intervention</h2>
+    </div>
+
+    <hr>
+
+    <div class="form-group">
+      <span id="icon-holder">Directions: </span> <i  mdbTooltip="Please fill out all of the following questions in as much detail as possible and press submit when finished. Please fill out one form per patient." placement="right" class="material-icons">info_outline</i>
+      <br><br>
+      <p class="required">* Required</p>
+    </div>
+
+    <div class="form-group">
+      <label for="dateInput"><strong>Intervention Date</strong><span class ="required"> *</span></label><br>
+      <input type="date" [(ngModel)]="interventionModel.date" #Date="ngModel" name="dateInput" required>
+      <div class="mt-1 alert alert-danger" *ngIf="(!Date.valid && Date.touched) || (interventionForm.submitted && !Date.valid)">
+        <span *ngIf="Date.errors?.required"><strong>The date is required.</strong></span>
+      </div>
+    </div>
+    <!--END form-group-->
+
+    <div class="form-group">
+      <h4><strong>Pharmacist Info</strong></h4>
+      <label for="pharmacist-name">Pharmacist Name <span class ="required">*</span></label>
+      <input type="text" required minlength="3" maxlength="30" [(ngModel)]="interventionModel.pharmacistName" #name="ngModel" class="form-control" name="pharmacistName" id="pharmacist-name" required autocomplete="off">
+
+      <div class="mt-1 alert alert-danger" *ngIf="(!name.valid && name.touched) || (interventionForm.submitted && !name.valid)">
+        <span *ngIf="name.errors?.required"> <strong>Name is required.</strong></span>
+        <span *ngIf="name.errors?.minlength"><strong>Name should be at least 3 characters long.</strong></span>
+        <span *ngIf="name.erros?.maxlength"><strong>Name should not exceed 30 characters.</strong></span>
+      </div>
+    </div>
+    <!--END form-group-->
+
+    <div class="form-group">
+      <label for="practiceSite">Practice Site <span class = "required">*</span></label><br>
+      <select class="form-control" [(ngModel)]="interventionModel.practiceSite" #site="ngModel" name="practiceSite" id="practice-site" required>
+      <option selected="selected"></option>
+      <option>Places for People</option>
+      <option>Volunteers in Medicine</option>
+      <option>SIHF</option>
+      <option>St. Elizabeth's Hospital</option>
+    </select>
+
+      <div class="mt-1 alert alert-danger" *ngIf="(!site.valid && site.touched) || (interventionForm.submitted && !site.valid)">
+        <span *ngIf="site.errors?.required"><strong>The practice site is required.</strong></span>
+      </div>
+
+    </div>
+    <!--END form-group-->
+
+    <div class="form-group">
+      <h4><strong>
+        Basic Information
+      </strong></h4>
+      <p class="text-primary">CHECK ALL THAT APPLY (if option is not available, write in option)</p>
+    </div>
+
+    <div class="form-group" ngModelGroup="interventionTypeBoxes">
+      <strong>Type of Intervention </strong><span class="required"> *</span><br>
+      <div class="checkbox">
+        <label><input type="checkbox" [(ngModel)] = "interventionModel.DrugInformation" #information="ngModel" name ="DrugInformation" value="Drug-Information" (change)="$event.target.checked ? true : false"> Drug information </label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox" [(ngModel)] = "interventionModel.Pharmacokinetics" #kinetics = "ngModel" name ="Pharmacokinetics" value="Pharmacokinetics" (change)="$event.target.checked ? true : false"> Pharmacokinetics </label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox" [(ngModel)] = "interventionModel.Pharmacotherapeutics" #therapeutics="ngModel" name ="Pharmacotherapeutics" value="Pharmacotherapeutics" (change)="$event.target.checked ? true :false"> Pharmacotherapeutics </label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox" [(ngModel)] = "interventionModel.PatientEducation" #education="ngModel" name ="PatientEducation" value="Patient-Education" (change)="$event.target.checked ? true : false"> Patient Education </label>
+      </div>
+
+
+      <label>Other: <input type="text" [(ngModel)] = "interventionModel.otherTypeOfIntervention" #otherInterventionTextField="ngModel" [required]="!atLeastOneChecked('interventionType')" name="otherTextField"></label>
+
+      <div class="alert alert-danger" *ngIf="(!atLeastOneChecked('interventionType') && (interventionForm.controls?.interventionTypeBoxes?.dirty && otherInterventionTextField.pristine)) || (otherInterventionTextField.touched && !otherInterventionTextField.valid) || (interventionForm.submitted && (!otherInterventionTextField.valid && otherInterventionTextField.errors?.required || !atLeastOneChecked('interventionType') && otherInterventionTextField.pristine && !otherInterventionTextField.touched))">
+        <span *ngIf="!atLeastOneChecked('interventionType') && otherInterventionTextField.pristine && !otherInterventionTextField.touched">
+        <strong>Please make a selection</strong>.
+        </span>
+        <span *ngIf="otherInterventionTextField.touched && otherInterventionTextField.errors?.required">Please fill out the text field.</span>
+      </div>
+    </div>
+    <!--END form-group-->
+
+    <div class="form-group" ngModelGroup="interventionBoxes">
+      <strong>Intervention </strong><span class="required"> *</span>
+      <p class="text-primary">CHECK ALL THAT APPLY (if option is not available, write in option)</p>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.adrIdentified"  name="adrIdentified" value="" (change)="$event.target.checked ? true : false"> ADR identified</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.discontinuationOfDrugTherapy"  name="discontinuationOfDrugTherapy" value="" (change)="$event.target.checked ? true : false"> Discontinuation of drug therapy</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.doseAdjustment"  name="doseAdjustment" value="" (change)="$event.target.checked ? true : false"> Dose adjustment</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.doseCalculation"  name="doseCalculation" value="" (change)="$event.target.checked ? true : false"> Dose calculation</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.drugInformationProvided"  name="drugInformationProvided" value="" (change)="$event.target.checked ? true : false"> Drug information provided</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.medicationReconciliation"  name="medicationReconciliation" value="" (change)="$event.target.checked ? true : false"> Medication reconciliation</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.monitoringRecommendations"  name="monitoringRecommendations" value="" (change)="$event.target.checked ? true : false"> Monitoring recommendations</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.newDrugTherapyAdded"  name="newDrugTherapyAdded" value="" (change)="$event.target.checked ? true : false"> New drug therapy added</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.nonPharmacologicalRecommendation"  name="nonPharmacologicalRecommendation" value="" (change)="$event.target.checked ? true : false"> Non-pharmacological recommendation</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.drugInteractionIdentified"  name="drugInteractionIdentified" value="" (change)="$event.target.checked ? true : false"> Drug interaction identified</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.duplicateTherapyIdentified"  name="duplicateTherapyIdentified" value="" (change)="$event.target.checked ? true : false"> Duplicate therapy identified</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.immunizationAdministered"  name="immunizationAdministered" value="" (change)="$event.target.checked ? true : false"> Immunization administered</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.diseaseStateEducation"  name="diseaseStateEducation" value="" (change)="$event.target.checked ? true : false"> Disease state education</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.newMedicationEducation"  name="newMedicationEducation" value="" (change)="$event.target.checked ? true : false"> New medication education</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.pointOfCareA"  name="pointOfCareA" value="" (change)="$event.target.checked ? true : false"> Point of care testing-A1c</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.pointOfCareLipids"  name="pointOfCareLipids" value="" (change)="$event.target.checked ? true : false"> Point of care testing-lipids</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.pointOfCareBloodGlucose"  name="pointOfCareBloodGlucose" value="" (change)="$event.target.checked ? true : false"> Point of care testing-blood glucose</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.pointOfCareAlbumin"  name="pointOfCareAlbumin" value="" (change)="$event.target.checked ? true : false"> Point of care testing-microalbumin</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "this.interventionModel.bloodPressureScreening"  name="bloodPressureScreening" value="" (change)="$event.target.checked ? true : false"> Blood pressure screening</label>
+      </div>
+
+
+      <label> Other: <input type="text" [(ngModel)]="interventionModel.otherIntervention" #otherInt="ngModel" [required]="!atLeastOneChecked('intervention')"  name="otherTypeOfIntervention"></label>
+
+
+      <div class="alert alert-danger" *ngIf="(!atLeastOneChecked('intervention') && interventionForm.controls?.interventionBoxes?.dirty && otherInt.pristine) || (otherInt.touched && !otherInt.valid) || (interventionForm.submitted && (!atLeastOneChecked('intervention') && !otherInt.touched || (otherInt.touched && otherInt.errors?.required)))">
+        <span *ngIf="!atLeastOneChecked('intervention') && !otherInt.touched">
+        <strong>Please make a selection</strong>.
+        </span>
+        <span *ngIf="otherInt.touched && otherInt.errors?.required">Please fill out the text field.</span>
+      </div>
+    </div>
+    <!--END form-group-->
+
+    <div class="form-group">
+      <label for="recommendation"><strong>Pharmacist's Recommendation </strong></label><span class="required"> *</span>
+      <p class="text-primary">Please provide detailed recommendation.</p>
+      <textarea class="form-control" rows="5" [(ngModel)]="interventionModel.recommendation" #rec="ngModel" name="recommendation" id="recommendation" required></textarea>
+
+      <div class="alert alert-danger mt-1" *ngIf="!rec.valid && rec.touched || (!rec.valid && interventionForm.submitted)">
+        <span *ngIf="rec.errors?.required"><strong>Your recommendation is required.</strong></span>
+      </div>
+    </div>
+    <!--END form-group-->
+
+    <div class="form-group">
+      <strong>Recommendation Acceptance </strong><span class="required"> *</span><br>
+      <div class="radio"><label><input required #acceptance="ngModel" type="radio" [(ngModel)]= "interventionModel.recommendationAcceptance" name="recommendationAcceptance" value="accepted"> Accepted</label></div>
+      <div class="radio"><label><input required #acceptance="ngModel" type="radio" [(ngModel)]= "interventionModel.recommendationAcceptance" name="recommendationAcceptance" value="modified-then-accepted"> Modified then accepted</label></div>
+      <div class="radio"><label><input required #acceptance="ngModel" type="radio" [(ngModel)]= "interventionModel.recommendationAcceptance" name="recommendationAcceptance" value = "rejected"> Rejected</label></div>
+      <div class="radio"><label><input required #acceptance="ngModel" type="radio" [(ngModel)]= "interventionModel.recommendationAcceptance" name="recommendationAcceptance" value="unknown"> Unknown</label></div>
+
+      <div class="alert alert-danger" *ngIf="!acceptance.valid && acceptance.touched || (!acceptance.valid && interventionForm.submitted)">
+        <span *ngIf="acceptance.errors?.required"><strong>Please make a selection</strong>.</span>
+      </div>
+    </div>
+    <!--END form-group-->
+
+    <div class="form-group">
+      <p class="text-primary"><strong>If modified then accepted, or rejected</strong><br> please write; What was the reason? Was it reasonable?</p>
+      <input type="text" [(ngModel)]="interventionModel.modifiedThenAccepted" class="form-control" name="modifiedThenAccepted">
+
+    </div>
+
+    <div class="form-group" ngModelGroup="modeOfRecommendationBoxes">
+      <strong>Mode of Recommendation</strong><span class="required"> *</span><br>
+      <p class="text-primary">How did you provide recommendation? CHECK ALL THAT APPLY (if option is not available, write in option)</p>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "interventionModel.phone"  name="phone" value="phone" (change)="$event.target.checked ? true : false"> Telecommunications w/ healthcare provider</label>
+      </div>
+      <div class="checkbox">
+        <label><input type="checkbox" [(ngModel)]= "interventionModel.provider"  name="provider" value="face-provider" (change)="$event.target.checked ? true :false"> Face to Face w/ healthcare provider</label>
+      </div>
+      <div class="checkbox">
+        <label><input type="checkbox" [(ngModel)]= "interventionModel.patient"  name="patient" value="patient" (change)="$event.target.checked ? true : false"> Face to Face w/ patient</label>
+      </div>
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]= "interventionModel.written" name="written" value="written-provider" (change)="$event.target.checked ? true : false"> Written recommendation to healthcare provider</label>
+      </div>
+
+      <label> Other: <input type="text" [(ngModel)]="interventionModel.otherModeOfRecommendation" #otherMode="ngModel" [required]="!atLeastOneChecked('modeOfRecommendation')" name="otherModeOfRecommendation"></label>
+
+
+      <div class="alert alert-danger" *ngIf="(!atLeastOneChecked('modeOfRecommendation') && interventionForm.controls?.modeOfRecommendationBoxes?.dirty && otherMode.pristine) || (otherMode.touched && !otherMode.valid) || (interventionForm.submitted && (!atLeastOneChecked('modeOfRecommendation') && !otherMode.touched || (otherMode.touched && otherMode.errors?.required)))">
+        <span *ngIf="!atLeastOneChecked('modeOfRecommendation') && !otherMode.touched">
+        <strong>Please make a selection</strong>.
+        </span>
+        <span *ngIf="otherMode.touched && otherMode.errors?.required">Please fill out the text field.</span>
+      </div>
+    </div>
+    <!--END form-group-->
+
+    <div class="form-group">
+      <p class="text-primary">If recommendation was to patient, how long was the encounter?</p>
+      <div class="radio"><label><input type="radio" [(ngModel)]="interventionModel.encounterLength" name="encounterLength" value="less-than-equal-15-Minutes"> &le; 15 minutes</label></div>
+      <div class="radio"><label><input type="radio" [(ngModel)]="interventionModel.encounterLength" name="encounterLength" value="15-29-Minutes"> 15-29 Minutes</label></div>
+      <div class="radio"><label><input type="radio" [(ngModel)]="interventionModel.encounterLength" name="encounterLength" value="30-44-Minutes"> 30-44 Minutes</label></div>
+      <div class="radio"><label><input type="radio" [(ngModel)]="interventionModel.encounterLength" name="encounterLength" value="45-49-Minutes"> 45-59 Minutes</label></div>
+      <div class="radio"><label><input type="radio" [(ngModel)]="interventionModel.encounterLength" name="encounterLength" value="greater-than-equal-60-Minutes"> &ge; 1 hour</label></div>
+    </div>
+    <!--END form-group-->
+
+    <div class="form-group">
+      <strong>Clinical Significance</strong><span class="required"> *</span><br>
+      <p class="text-primary">Potentially Severe / High = intervention that may have resulted in decreasing patient mortality, preventing or reducing organ damage or system failure, and resulted in cost savings; Important / Moderate = intervention
+        that may have resulted in improving
+        the quality of patient care; and Minor/ Low = intervention that may have resulted in improving convienience of compliance.</p>
+
+      <div class="radio"><label><input type="radio" required #significance="ngModel" [(ngModel)] = "interventionModel.clinicalSig" name = "clinicalSig" aria-describedby="high" value="Severe-High"> Potentially Severe / High</label></div>
+      <div class="radio"><label><input type="radio" required #significance="ngModel" [(ngModel)] = "interventionModel.clinicalSig" name = "clinicalSig" aria-descirbedby="important" value="Important-moderate"> Important / Moderate</label></div>
+      <div class="radio"><label><input type="radio" required #significance="ngModel" [(ngModel)] = "interventionModel.clinicalSig" name = "clinicalSig" aria-descirbedby="low" value="Minor-low"> Minor / Low</label></div>
+
+      <div class="alert alert-danger" *ngIf="!significance.valid && significance.touched || (!significance.valid && interventionForm.submitted)">
+        <span *ngIf="significance.errors?.required" class="help-block"><strong>Please make a selection</strong>.</span>
+      </div>
+    </div>
+    <!--END form-group-->
+
+    <div class="form-group" ngModelGroup="outComeBoxes">
+      <strong>Expected Outcomes</strong><span class="required"> *</span><br>
+      <p class="text-primary">How did you provide recommendation? CHECK ALL THAT APPLY (if option is not available, select OTHER and write in option)</p>
+
+      <div class="checkbox">
+        <label><input type="checkbox"  [(ngModel)]="interventionModel.ADR" name="ADR" value="ADR-prevented-Resolved" (change)="$event.target.checked ? true : false"> ADR prevented / Resolved</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox" [(ngModel)]="interventionModel.cost" name="cost" value="cost-savings" (change)="$event.target.checked ? true : false"> Cost Savings</label>
+      </div>
+
+      <div class="checkbox">
+        <label><input type="checkbox" [(ngModel)]="interventionModel.enhanced" name="enhanced" value="enhanced-therapeutic-effect" (change)="$event.target.checked ? true : false"> Enhanced therapeutic effect</label>
+      </div>
+
+      <label>Other: <input type="text" [required]="!atLeastOneChecked('outcome')" #otherTextField = "ngModel" [(ngModel)]="interventionModel.otherOutcome" name="otherOutcome" minlenth="2"></label>
+
+
+      <div class="alert alert-danger" *ngIf="(!atLeastOneChecked('outcome') && interventionForm.controls?.outComeBoxes?.dirty && otherTextField.pristine) || (otherTextField.touched && !otherTextField.valid) || (interventionForm.submitted && (!atLeastOneChecked('outcome') && !otherTextField.touched || (otherTextField.touched && otherTextField.errors?.required)))">
+        <span *ngIf="!atLeastOneChecked('outcome') && !otherTextField.touched">
+      <strong>Please make a selection</strong>.
+      </span>
+        <span *ngIf="otherTextField.touched && otherTextField.errors?.required">Please fill out the text field.</span>
+      </div>
+    </div>
+    <!--END form-group-->
+
+    <div class="form-group">
+      <button mdbBtn class="mb-3" color="primary" (click) = "updateSubmissionStatus()" mdbWavesEffect>Submit</button>
+    </div>
+
+    <div class="form-group pb-3">
+      <div class="alert alert-danger" *ngIf="userSubmittedIntervention && !interventionForm.valid">
+        <span>
+          <strong>There are errors in the intervention. Please fill out all required fields.</strong>
+        </span>
+      </div>
+    </div>
+
+
+  </form>
+
+  <div mdbModal #messageModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" (onHide)="redirect()">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title w-100">{{modalTitle}}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="hideModal()">
+                      <span aria-hidden="true">×</span>
+                  </button>
+        </div>
+        <div class="modal-body">
+          {{message}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-sm waves-light" mdbWavesEffect (click)="hideModal()">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
